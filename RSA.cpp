@@ -62,19 +62,6 @@ string conversionEnNombreStr(string ChaineAConvertir)
     return messageEnNombre ;
 }
 
-
-bool nombrePremier(int n)
-{
-    for (int a(2); a<sqrt(n) + 1; a++)
-    {
-        if ((n%a) == 0)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
 void encryption()
 {
     int n, e;
