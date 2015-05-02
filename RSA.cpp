@@ -5,6 +5,24 @@
 #include <sstream>
 using namespace std;
 
+int pow(int x,int k,int n)
+{
+    int section(1) ;
+        while(k>0)
+        {
+            if (k%2!=0)
+            {
+                section =(section*x)%n ;
+            }
+            else
+            {
+                ;
+            }
+            x = (x*x)%n ;
+            k=k/2 ;
+        }
+    return section ;
+}
 int tailleDunNombre(int n)
 {
     stringstream ss ;
@@ -80,7 +98,7 @@ void encryption()
     string messageAcrypter = conversionEnNombreStr(messageAcode);
 
     int const SizeTable((messageAcrypter.size())/(tailleN-1)) ;
-    int section(1),aliasE(e),y(0) ;
+    int y(0);
     int tableauTranche[SizeTable] ;
     for (int i(0); i<messageAcrypter.size()/(tailleN-2); i+=tailleN-1)
     {
@@ -91,22 +109,7 @@ void encryption()
     int tableauCrypte[SizeTable] ;
     for (int i(0); i<SizeTable; i++)
     {
-        section = 1 ;
-        aliasE = e ;
-        while(aliasE>0)
-        {
-            if (aliasE%2!=0)
-            {
-                section =(section*tableauTranche[i])%n ;
-            }
-            else
-            {
-                ;
-            }
-            tableauTranche[i]= (tableauTranche[i]*tableauTranche[i])%n ;
-            aliasE=aliasE/2 ;
-        }
-        tableauCrypte[i]= section ;
+       tableauCrypte[i]=pow(tableauTranche[i],e,n) ;
     }
     string stringFinal(intToStr(tableauCrypte,SizeTable,tailleN));
 
@@ -146,22 +149,7 @@ void decodage()
     int tableauCrypte[SizeTable] ;
     for (int i(0); i<SizeTable; i++)
     {
-        section = 1 ;
-        aliasD = d ;
-        while(aliasD>0)
-        {
-            if (aliasD%2!=0)
-            {
-                section =(section*tableauTranche[i])%n ;
-            }
-            else
-            {
-                ;
-            }
-            tableauTranche[i]= (tableauTranche[i]*tableauTranche[i])%n ;
-            aliasD=aliasD/2 ;
-        }
-        tableauCrypte[i]= section ;
+        tableauCrypte[i] = pow(tableauTranche[i],d,n) ;
     }
 
     string messageDecoder, nstr, ConversionRangCar[37] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39" };
@@ -182,19 +170,42 @@ void decodage()
 
 
 }
-
+void laReponseD()
+{
+    int d,e,p,k(0) ;
+    cout << "e et phi(n) : " << endl ;
+    cin >> e ;
+    cin >> p ;
+        while ((p*k+1)%e!=0)
+    {
+        k++ ;
+    }
+    d =(p*k+1)/e ;
+    cout << "d :" << d << endl ;
+}
 
 int main()
 {
     cout << "Encrytion : 1" << endl;
     cout << "Decodage : 2" << endl;
+    cout << "Trouver d : 3" << endl ;
     int choix;
     cin >> choix ;
     system("cls");
-    if (choix == 1)
+    switch (choix)
     {
-        encryption();
+    case 1:
+        encryption() ;
+        break ;
+    case 2:
+        decodage() ;
+        break ;
+    case 3:
+        laReponseD() ;
+        break ;
+    default:
+        cout << "==>[]" << endl ;
     }
-    else decodage();
     return 0;
 }
+
